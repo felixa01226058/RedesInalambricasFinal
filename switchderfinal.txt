@@ -1,0 +1,245 @@
+
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname SwitchL3-DER
+!
+enable secret 5 $1$OF5N$k3a1YrcDKr.QTuWX8B2u80
+!
+username cisco privilege 15 secret 5 $1$qRe1$hSwB5kuF8Ilgu0ft1DxVj/
+no aaa new-model
+ip subnet-zero
+ip routing
+no ip domain-lookup
+!
+!
+!
+key chain quiero100
+ key 1
+   key-string 7 06171A28495C06485547
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+interface FastEthernet0/1
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/2
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/3
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/4
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/5
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/6
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/7
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/8
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/9
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/10
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/11
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/12
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/13
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/14
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/15
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/16
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/17
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/18
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/19
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/20
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/21
+ switchport mode dynamic desirable
+!
+interface FastEthernet0/22
+ description Puerto Trunk para SwitchCliente
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface FastEthernet0/23
+ description Puerto Trunk para SwitchServer
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface FastEthernet0/24
+ switchport mode dynamic desirable
+!
+interface GigabitEthernet0/1
+ switchport mode dynamic desirable
+!
+interface GigabitEthernet0/2
+ switchport mode dynamic desirable
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan770
+ bandwidth 20000
+ ip address 172.20.160.3 255.255.255.0
+ ip helper-address 172.20.164.18
+ standby 1 ip 172.20.160.254
+ standby 1 priority 110
+ standby 1 preempt
+ standby 1 authentication md5 key-string 7 030752180500
+!
+interface Vlan771
+ bandwidth 20000
+ ip address 172.20.161.3 255.255.255.0
+ ip helper-address 172.20.164.18
+ standby 2 ip 172.20.161.254
+ standby 2 preempt
+ standby 2 authentication md5 key-string 7 070C285F4D06
+!
+interface Vlan772
+ bandwidth 20000
+ ip address 172.20.162.3 255.255.255.0
+ ip helper-address 172.20.164.18
+ standby 3 ip 172.20.162.254
+ standby 3 priority 110
+ standby 3 preempt
+ standby 3 authentication md5 key-string 7 110A1016141D
+!
+interface Vlan773
+ bandwidth 20000
+ ip address 172.20.163.3 255.255.255.0
+ ip helper-address 172.20.164.18
+ standby 4 ip 172.20.163.254
+ standby 4 preempt
+ standby 4 authentication md5 key-string 7 045802150C2E
+!
+interface Vlan774
+ bandwidth 20000
+ ip address 172.20.164.4 255.255.255.240
+ ip helper-address 172.20.164.18
+ ip authentication mode eigrp 42 md5
+ ip authentication key-chain eigrp 42 quiero100
+ standby 5 ip 172.20.164.14
+ standby 5 priority 110
+ standby 5 preempt
+ standby 5 authentication md5 key-string 7 00071A150754
+!
+interface Vlan775
+ bandwidth 20000
+ ip address 172.20.164.21 255.255.255.248
+ standby 6 ip 172.20.164.22
+ standby 6 preempt
+ standby 6 authentication md5 key-string 7 05080F1C2243
+!
+!
+router eigrp 42
+ passive-interface default
+ no passive-interface Vlan774
+ no auto-summary
+ network 172.20.0.0
+!
+ip default-gateway 172.20.164.1
+ip classless
+ip route 0.0.0.0 0.0.0.0 Vlan774
+ip http server
+!
+!
+access-list 3 permit 172.20.162.0 0.0.0.255
+access-list 3 permit 172.20.163.0 0.0.0.255
+access-list 3 permit 172.20.164.0 0.0.0.15
+access-list 3 permit 172.20.164.16 0.0.0.7
+!
+control-plane
+!
+banner motd 
+quu..__
+ $$$b  `---.__
+  "$$b        `--.                          ___.---uuudP
+   `$$b           `.__.------.__     __.---'      $$$$"              .
+     "$b          -'            `-.-'            $$$"              .'|
+       ".                                       d$"             _.'  |
+         `.   /                              ..."             .'     |
+           `./                           ..::-'            _.'       |
+            /                         .:::-'            .-'         .'
+           :                          ::''\          _.'            |
+          .' .-.             .-.           `.      .'               |
+          : /'$$|           .@"$\           `.   .'              _.-'
+         .'|$u$$|          |$$,$$|           |  <            _.-'
+         | `:$$:'          :$$$$$:           `.  `.       .-'
+         :                  `"--'             |    `-.     \
+        :oo.       ==             .ooo.       `.      `.    `\
+        |oo:                      :ooo:        |        >     >
+        |o'     `..'`..'          `ooo'        x:      /     /
+         \                                   xXX|     /    ./
+          \                                xXXX'|    /   ./
+          /`-.                                  `.  /   /
+         :    `-  ...........,                   | /  .'
+         |         ``:::::::'       .            |<    `.
+         |             ```          |           x| \ `.:``.
+         |                         .'    /'   xXX|  `:`M`M':.
+         |    |                    ;    /:' xXXX'|  -'MMMMM:'
+         `.  .'                   :    /:'       |-'MMMM.-'
+          |  |                   .'   /'        .'MMM.-'
+          `'`'                   :  ,'          |MMM<
+            |                     `'            |MMM\
+             \                                  :MM.-'
+              \                 |              .''
+               \.               `.            /
+                /     .:::::::.. :           /
+               |     .:::::::::::`.         /
+               |   .:::------------\       /
+              /   .''               >::'  /
+              `',:                 :    .'
+
+!
+line con 0
+ exec-timeout 5 0
+ login local
+line vty 0 4
+ access-class 3 in
+ exec-timeout 5 0
+ login local
+line vty 5 15
+ access-class 3 in
+ exec-timeout 5 0
+ login local
+!
+end

@@ -1,0 +1,207 @@
+
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname SwitchCliente
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$t1Mv$7k8mcBVRqn1aVJzRBCBCL/
+!
+username cisco privilege 15 secret 5 $1$IFJR$c9nMVo7Z5t9kNdV46o/33/
+no aaa new-model
+system mtu routing 1500
+ip subnet-zero
+!
+!
+no ip domain-lookup
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+interface FastEthernet0/1
+ description Puerto Trunk para AP
+ switchport trunk native vlan 774
+ switchport trunk allowed vlan 1,770-779
+ switchport mode trunk
+!
+interface FastEthernet0/2
+ description Puerto Trunk para AP
+ switchport trunk native vlan 774
+ switchport trunk allowed vlan 1,770-779
+ switchport mode trunk
+!
+interface FastEthernet0/3
+ description Puerto Trunk para AP
+ switchport trunk native vlan 774
+ switchport trunk allowed vlan 1,770-779
+ switchport mode trunk
+!
+interface FastEthernet0/4
+ description Puerto Trunk para AP
+ switchport trunk native vlan 774
+ switchport trunk allowed vlan 1,770-779
+ switchport mode trunk
+!
+interface FastEthernet0/5
+ description Puerto de acceso para servidor DHCP
+ switchport access vlan 775
+ switchport mode access
+ no cdp enable
+ spanning-tree portfast
+!
+interface FastEthernet0/6
+ description Puerto de acceso para servidor Radius       
+ switchport access vlan 775
+ switchport mode access
+ no cdp enable
+ spanning-tree portfast
+!
+interface FastEthernet0/7
+ switchport access vlan 771
+ switchport mode access
+ no cdp enable
+ spanning-tree portfast
+!
+interface FastEthernet0/8
+ switchport access vlan 772
+ switchport mode access
+ no cdp enable
+ spanning-tree portfast
+!
+interface FastEthernet0/9
+ description AP
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 1,770-779
+ switchport mode trunk
+ spanning-tree portfast
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+ switchport trunk allowed vlan 1,770-779
+ switchport mode trunk
+!
+interface FastEthernet0/22
+ description Puerto Trunk SwitchL3 Derecho
+ switchport mode trunk
+!
+interface FastEthernet0/23
+ description Puerto Trunk SwitchL3 Izquierdo
+ switchport mode trunk
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan774
+ ip address 172.20.164.5 255.255.255.240
+ no ip route-cache
+!
+ip default-gateway 172.20.164.14
+ip http server
+ip http secure-server
+access-list 3 permit 172.20.162.0 0.0.0.255
+access-list 3 permit 172.20.163.0 0.0.0.255
+access-list 3 permit 172.20.164.0 0.0.0.15
+access-list 3 permit 172.20.164.16 0.0.0.7
+!
+control-plane
+!
+banner motd 
+quu..__
+ $$$b  
+  "$$b        
+   
+     "$b          -'            
+       ".                                       d$"             _.'  |
+         
+           
+            /                         .:::-'            .-'         .'
+           :                          ::''\          _.'            |
+          .' .-.             .-.           
+          : /'$$|           .@"$\           
+         .'|$u$$|          |$$,$$|           |  <            _.-'
+         | `:$$:'          :$$$$$:           `.  `.       .-'
+         :                  
+        :oo.       ==             .ooo.       
+        |oo:                      :ooo:        |        >     >
+        |o'     `..'`..'          `ooo'        x:      /     /
+         \                                   xXX|     /    ./
+          \                                xXXX'|    /   ./
+          /
+         :    
+         |         ``:::::::'       .            |<    `.
+         |             ```          |           x| \ `.:``.
+         |                         .'    /'   xXX|  `:`M`M':.
+         |    |                    ;    /:' xXXX'|  -'MMMMM:'
+         
+          |  |                   .'   /'        .'MMM.-'
+          
+            |                     `'            |MMM\
+             \                                  :MM.-'
+              \                 |              .''
+               \.               
+                /     .:::::::.. :           /
+               |     .:::::::::::`.         /
+               |   .:::------------\       /
+              /   .''               >::'  /
+              
+
+!
+line con 0
+ exec-timeout 5 0
+ login local
+line vty 0 4
+ access-class 3 in
+ exec-timeout 5 0
+ login local
+line vty 5 15
+ access-class 3 in
+ exec-timeout 5 0
+ login local
+!
+end

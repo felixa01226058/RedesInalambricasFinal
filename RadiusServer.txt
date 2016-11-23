@@ -1,0 +1,24 @@
+//////////////////////// /etc/freeradius/clients.conf /////////////////
+
+
+
+client 10.40.72.33 {
+	secret    = eri
+	shortname = wlc
+	nastype   = cisco
+}
+
+client 10.40.72.34 {
+        secret    = eri
+        shortname = wlc
+        nastype   = cisco
+}
+
+
+///////////////////// /etc/freeradius/users /////////////////////
+
+### WEB-AUTH & WPA2/Dot1x/PEAP/MSCHAPv2
+
+rafa   Cleartext-Password := "rafa"
+
+felix  Cleartext-Password := "felix"
